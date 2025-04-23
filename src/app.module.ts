@@ -1,22 +1,30 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
+
 import { SequelizeModule } from "@nestjs/sequelize";
+import { UsersModule } from './users/users.module';
+import { ConfigModule } from '@nestjs/config';
+import { Dialect } from "sequelize";
 
 @Module({
-	controllers: [AppController],
-	providers: [AppService],
+	controllers: [],
+	providers: [],
 	imports: [
+
+		ConfigModule.forRoot({
+			// envFilePath: process.env.NODE_ENV === 'production' ? '.production.env' : '.development.env'
+			envFilePath: `.${process.env.NODE_ENV}.env`
+		}),
 		SequelizeModule.forRoot({
-			dialect: 'mariadb',
-			host: 'localhost',
-			port: 3306,
-			username: 'root',
-			password: '',
-			database: 'nest',
+			dialect: process.env.SEQUELIZE_DIALECT as Dialect,
+			host: process.env.MARIABD_HOST,
+			port: process.env.MARIABD_PORT ? parseInt(process.env.MARIABD_PORT) : 3306,
+			username: process.env.MARIABD_USER,
+			password: process.env.MARIABD_PASSWORD,
+			database: process.env.MARIABD_DB,
 			models: [],
 			autoLoadModels: true
 		}),
+		UsersModule,
 	]
 })
 export class AppModule { }
