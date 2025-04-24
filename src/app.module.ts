@@ -5,6 +5,9 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { Dialect } from "sequelize";
 import { User } from "./users/user.model";
+import { RolesModule } from './roles/roles.module';
+import { Role } from "./roles/roles.model";
+import { UserRoles } from "./roles/user-roles.model";
 
 @Module({
 	controllers: [],
@@ -22,10 +25,11 @@ import { User } from "./users/user.model";
 			username: process.env.MARIABD_USER,
 			password: process.env.MARIABD_PASSWORD,
 			database: process.env.MARIABD_DB,
-			models: [User],
+			models: [User, Role, UserRoles],
 			autoLoadModels: true
 		}),
 		UsersModule,
+		RolesModule,
 	]
 })
 export class AppModule { }
