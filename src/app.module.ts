@@ -12,6 +12,7 @@ import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 
+
 @Module({
 	controllers: [AuthController],
 	providers: [AuthService],
@@ -19,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
 
 		ConfigModule.forRoot({
 			// envFilePath: process.env.NODE_ENV === 'production' ? '.production.env' : '.development.env'
+			isGlobal: true,
 			envFilePath: `.${process.env.NODE_ENV}.env`
 		}),
 		SequelizeModule.forRoot({
@@ -29,11 +31,13 @@ import { AuthModule } from './auth/auth.module';
 			password: process.env.MARIABD_PASSWORD,
 			database: process.env.MARIABD_DB,
 			models: [User, Role, UserRoles],
-			autoLoadModels: true
+			autoLoadModels: true,
+			logging: false
 		}),
 		UsersModule,
 		RolesModule,
 		AuthModule,
+
 	]
 })
 export class AppModule { }
